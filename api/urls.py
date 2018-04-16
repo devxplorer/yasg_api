@@ -3,7 +3,7 @@ from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from rest_framework import permissions
 
-from api.views import ItemListAPIView
+from api.views import ItemListAPIView, PetsListAPIView
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -18,6 +18,7 @@ schema_view = get_schema_view(
 
 urlpatterns = [
     url(r'^items/', ItemListAPIView.as_view(), name='items'),
+    url(r'^pets/', PetsListAPIView.as_view(), name='pets'),
 
     url(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(), name='schema-json'),
     url(r'^swagger/$', schema_view.with_ui('swagger'), name='schema-swagger-ui'),
