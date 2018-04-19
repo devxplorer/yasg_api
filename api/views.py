@@ -28,7 +28,7 @@ class PolymorphicSerializerInspector(SerializerInspector):
         m = re.search(r"#/definitions/(?P<definition_name>\w+)", ref)
         return m.group('definition_name')
 
-    def _create_schema_definition(self, serializer):
+    def _get_schema(self, serializer):
         schema_ref = self.probe_inspectors(
             self.field_inspectors, 'get_schema', serializer, {
                 'field_inspectors': self.field_inspectors
@@ -44,8 +44,9 @@ class PolymorphicSerializerInspector(SerializerInspector):
             definitions.pop(definition_name, None)
 
             base_model_name = obj.to_discriminator(obj.base_serializer.Meta.model)
+            base_ref = '#/definitions/{}'.format(base_model_name)
             if base_model_name not in definitions:
-                schema = self._create_schema_definition(obj.base_serializer)
+                schema = self._get_schema(obj.base_serializer)
                 schema['discriminator'] = obj.discriminator_field
                 schema['required'] = schema.setdefault('required', []) + [obj.discriminator_field]
                 definitions[base_model_name] = schema
@@ -56,11 +57,11 @@ class PolymorphicSerializerInspector(SerializerInspector):
                     definitions[discriminator] = openapi.Schema(
                         type=openapi.TYPE_OBJECT,
                         allOf=[
-                            {'$ref': '#/definitions/Pet'},
-                            self._create_schema_definition(serializer)
+                            {'$ref': base_ref},
+                            self._get_schema(serializer)
                         ]
                     )
-            result['$ref'] = '#/definitions/{}'.format(base_model_name)
+            result['$ref'] = base_ref
 
         return result
 
