@@ -10,6 +10,7 @@ class Item(models.Model):
 
     name = models.CharField(max_length=128)
     status = models.IntegerField(choices=STATUSES)
+    pet = models.ForeignKey('api.Pet', related_name='items', null=True, blank=True)
 
 
 class PolymorphicModel(models.Model):
@@ -29,7 +30,9 @@ class PolymorphicModel(models.Model):
 
 
 class Pet(PolymorphicModel):
-    pass
+    @property
+    def pet_type(self):
+        return self.content_type.model.capitalize()
 
 
 class Cat(Pet):

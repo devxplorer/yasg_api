@@ -2,3 +2,4 @@
 db.sqlite3
 *.py[cod]
 __pycache__/
+/yasg/local_settings.py
