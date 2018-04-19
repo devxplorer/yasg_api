@@ -6,7 +6,7 @@ from rest_framework import serializers
 from six import string_types
 
 from api.helpers import merge_dicts
-from api.models import Item, Pet, Cat, Dog, Lizard
+from api.models import Item, Pet, Cat, Dog, Lizard, Ordinary
 
 
 class ItemSerializer(serializers.ModelSerializer):
@@ -182,6 +182,7 @@ class PolymorphicPetSerializer(PolymorphicSerializer):
     discriminator_field = 'pet_type'
     base_serializer_class = PetSerializer
     derived_serializers_mapping = {
+        Ordinary: None,
         Cat: CatSerializer,
         Dog: DogSerializer,
         Lizard: LizardSerializer,

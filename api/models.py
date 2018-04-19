@@ -35,6 +35,10 @@ class Pet(PolymorphicModel):
         return self.content_type.model.capitalize()
 
 
+class Ordinary(Pet):
+    pass
+
+
 class Cat(Pet):
     name = models.CharField(max_length=128)
 
