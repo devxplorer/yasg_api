@@ -75,9 +75,12 @@ class PolymorphicSerializer(serializers.Serializer):
         else:
             serializer = self._get_serializer_from_model_or_instance(instance)
 
-        ret1 = self.base_serializer.to_representation(instance)
-        ret2 = serializer.to_representation(instance)
-        ret = merge_dicts(ret2, ret1)
+        if serializer is None or (serializer.__class__ == self.base_serializer_class):
+            ret = self.base_serializer.to_representation(instance)
+        else:
+            ret1 = self.base_serializer.to_representation(instance)
+            ret2 = serializer.to_representation(instance)
+            ret = merge_dicts(ret2, ret1)
         return ret
 
     def to_internal_value(self, data):
