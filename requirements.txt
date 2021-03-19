@@ -4,7 +4,7 @@ click==6.7
 coreapi==2.3.3
 coreschema==0.0.4
 Django==1.11.23
-djangorestframework==3.8.2
+djangorestframework==3.11.2
 drf-yasg==1.6.1
 flex==6.13.1
 future==0.16.0
